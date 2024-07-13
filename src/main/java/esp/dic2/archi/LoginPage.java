@@ -1,8 +1,8 @@
 package esp.dic2.archi;
 
-import esp.dic2.archi.soapclient.proxy.AuthenticationSoapController;
-import esp.dic2.archi.soapclient.proxy.AuthenticationSoapService;
 import esp.dic2.archi.soapclient.proxy.SQLException_Exception;
+import esp.dic2.archi.soapclient.proxy.UserSoapService;
+import esp.dic2.archi.soapclient.proxy.UserSoapService_Service;
 
 import javax.swing.*;
 
@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 
 public class LoginPage implements ActionListener {
 
-    private AuthenticationSoapController authenticationSoapController = new AuthenticationSoapService().getAuthenticationSoapControllerPort();
+    private UserSoapService userSoapService = new UserSoapService_Service().getUserSoapServicePort();
 
     JFrame frame = new JFrame();
     JButton loginButton = new JButton("Login");
@@ -72,7 +72,7 @@ public class LoginPage implements ActionListener {
 
             //[TODO REQUEST]
             try {
-                String result = authenticationSoapController.authentification(userText, passText);
+                String result = userSoapService.authentification(userText, passText);
                 if ( result.equals("SUCCESS") ) {
                     message.setText("Login successful");
                     message.setForeground(Color.green);

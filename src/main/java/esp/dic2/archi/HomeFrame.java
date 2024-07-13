@@ -1,5 +1,9 @@
 package esp.dic2.archi;
 
+import esp.dic2.archi.soapclient.proxy.SQLException_Exception;
+import esp.dic2.archi.soapclient.proxy.UserSoapService;
+import esp.dic2.archi.soapclient.proxy.UserSoapService_Service;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +12,7 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
 public class HomeFrame extends JFrame {
+    private UserSoapService userSoapService = new UserSoapService_Service().getUserSoapServicePort();
     private JPanel cardPanel;
     private CardLayout cardLayout;
     private JTable usersTable;
@@ -99,7 +104,19 @@ public class HomeFrame extends JFrame {
         constraints.anchor = GridBagConstraints.CENTER;
         panel.add(addButton, constraints);
 
-        addButton.addActionListener(e -> addUser(loginField.getText(), new String(passwordField.getPassword())));
+        addButton.addActionListener(e -> {
+            //[TODO REQUEST]
+            try {
+                String result = userSoapService.ajoutUtilisateur( "4256", loginField.getText(), passwordField.getText() );
+
+                if (result.equals("SUCCESS")) {
+                    System.out.println("GOOD");
+                }
+
+            } catch (SQLException_Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        } );
 
         return panel;
     }
@@ -274,7 +291,4 @@ public class HomeFrame extends JFrame {
         }
     }
 //
-//    public static void main(String[] args) {
-//
-//    }
 }
