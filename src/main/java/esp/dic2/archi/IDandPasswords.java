@@ -1,4 +1,4 @@
-package org.example;
+package esp.dic2.archi;
 
 import java.util.HashMap;
 

@@ -1,3 +1,5 @@
+package esp.dic2.archi;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
