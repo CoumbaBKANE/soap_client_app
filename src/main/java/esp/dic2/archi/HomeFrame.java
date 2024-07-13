@@ -273,8 +273,8 @@ public class HomeFrame extends JFrame {
             tableModel.removeRow(selectedRows[i]);
         }
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new HomeFrame().setVisible(true));
-    }
+//
+//    public static void main(String[] args) {
+//
+//    }
 }

@@ -77,7 +77,9 @@ public class LoginPage implements ActionListener {
                     message.setText("Login successful");
                     message.setForeground(Color.green);
                     frame.dispose();
-                    HomeFrame homeFrame = new HomeFrame();
+//                    HomeFrame homeFrame = new HomeFrame();
+                    SwingUtilities.invokeLater(() -> new HomeFrame().setVisible(true));
+
                 }else {
                     message.setText("Login failed");
                     message.setForeground(Color.red);
