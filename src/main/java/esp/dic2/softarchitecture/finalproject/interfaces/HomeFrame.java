@@ -1,8 +1,8 @@
-package esp.dic2.archi;
+package esp.dic2.softarchitecture.finalproject.interfaces;
 
-import esp.dic2.archi.soapclient.proxy.SQLException_Exception;
-import esp.dic2.archi.soapclient.proxy.UserSoapService;
-import esp.dic2.archi.soapclient.proxy.UserSoapService_Service;
+import esp.dic2.softarchitecture.finalproject.soapclient.proxy.User;
+import esp.dic2.softarchitecture.finalproject.soapclient.proxy.UserSoapService;
+import esp.dic2.softarchitecture.finalproject.soapclient.proxy.UserSoapService_Service;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class HomeFrame extends JFrame {
     private UserSoapService userSoapService = new UserSoapService_Service().getUserSoapServicePort();
+    private final String TOKEN = "4256";
     private JPanel cardPanel;
     private CardLayout cardLayout;
     private JTable usersTable;
@@ -107,13 +108,15 @@ public class HomeFrame extends JFrame {
         addButton.addActionListener(e -> {
             //[TODO REQUEST]
             try {
-                String result = userSoapService.ajoutUtilisateur( "4256", loginField.getText(), passwordField.getText() );
+                String result = userSoapService.ajoutUtilisateur( TOKEN, loginField.getText(), passwordField.getText() );
 
                 if (result.equals("SUCCESS")) {
+                    loginField.setText("");
+                    passwordField.setText("");
                     System.out.println("GOOD");
                 }
 
-            } catch (SQLException_Exception ex) {
+            } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
         } );
@@ -126,18 +129,15 @@ public class HomeFrame extends JFrame {
         panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(), BorderFactory.createEmptyBorder(20, 20, 20, 20)));
 
         // Données fictives d'exemple pour les utilisateurs
-        List<String> usernames = new ArrayList<>();
-        usernames.add("JohnDoe");
-        usernames.add("JaneSmith");
-        usernames.add("RobertJohnson");
+        List<User> users = userSoapService.listeUtilisateurs(TOKEN);
 
         // Noms des colonnes pour la table des utilisateurs
         String[] columnNames = {"Users"};
 
         // Création du modèle de table pour les utilisateurs
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
-        for (String username : usernames) {
-            tableModel.addRow(new Object[]{username});
+        for (User user : users) {
+            tableModel.addRow(new Object[]{user.getNom()});
         }
 
         JTable usersTable = new JTable(tableModel);
@@ -196,18 +196,18 @@ public class HomeFrame extends JFrame {
         deleteButton.addActionListener(e -> deleteUser());
 
         // Tableau des utilisateurs (simulé ici, normalement récupéré de la JTable listUsersPanel)
-        List<String[]> userData = new ArrayList<>();
-        userData.add(new String[]{"JohnDoe", "password1"});
-        userData.add(new String[]{"JaneSmith", "password2"});
-        userData.add(new String[]{"RobertJohnson", "password3"});
+        List<User> userData = userSoapService.listeUtilisateurs(TOKEN);
 
         // Noms des colonnes pour la table des utilisateurs
         String[] columnNames = {"Login", "Password"};
 
         // Création du modèle de table pour les utilisateurs
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
-        for (String[] user : userData) {
-            tableModel.addRow(user);
+        for (User user : userData) {
+            String[] userAdded = new String[2];
+            userAdded[0] = user.getNom();
+            userAdded[1] = user.getMotDePasse();
+            tableModel.addRow(userAdded);
         }
 
         JTable usersTable = new JTable(tableModel);

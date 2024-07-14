@@ -1,8 +1,8 @@
-package esp.dic2.archi;
+package esp.dic2.softarchitecture.finalproject.interfaces;
 
-import esp.dic2.archi.soapclient.proxy.SQLException_Exception;
-import esp.dic2.archi.soapclient.proxy.UserSoapService;
-import esp.dic2.archi.soapclient.proxy.UserSoapService_Service;
+import esp.dic2.softarchitecture.finalproject.soapclient.proxy.SQLException_Exception;
+import esp.dic2.softarchitecture.finalproject.soapclient.proxy.UserSoapService;
+import esp.dic2.softarchitecture.finalproject.soapclient.proxy.UserSoapService_Service;
 
 import javax.swing.*;
 
@@ -85,7 +85,7 @@ public class LoginPage implements ActionListener {
                     message.setForeground(Color.red);
                 }
 
-            } catch (SQLException_Exception ex) {
+            } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
 
